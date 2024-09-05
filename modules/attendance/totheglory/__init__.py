@@ -23,10 +23,9 @@ class totheglory(Site, domain_suffixes=["totheglory.im"]):
             response = super(totheglory, totheglory).sendRequest(cookies, totheglory.siteAttendanceURL, data=data, method='POST')
             if response.status_code == 200:
                 LOG_INFO(f"{totheglory.siteName}：签到成功")
-                return {totheglory.siteName:'签到成功'}
+                return True
             else:
                 LOG_INFO(f"{totheglory.siteName} 签到失败")
-                return {totheglory.siteName:'签到失败'}
-
+                return False
         except Exception as e:
             LOG_ERROR(e)

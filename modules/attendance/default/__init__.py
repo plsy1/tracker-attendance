@@ -6,19 +6,21 @@ class DefaultSite:
     
     @staticmethod
     def sign_in(credentials: Dict[str, str]):
-        domain = credentials.get('domain')
-        cookies = credentials.get('cookies')
-        
-        siteName = DefaultSite.getSiteName(domain)
-        siteAttendanceURL = f'https://{domain}/attendance.php'
-        
-        response = DefaultSite.sendRequest(cookies, siteAttendanceURL, method='GET')
-        if response.status_code == 200:
-            LOG_INFO(f"{siteName}：签到成功")
-            return {siteName:'签到成功'}
-        else:
-            LOG_INFO(f"{siteName} 签到失败")
-            return {siteName:'签到失败'}
+        try:
+            domain = credentials.get('domain')
+            cookies = credentials.get('cookies')
+            
+            siteName = DefaultSite.getSiteName(domain)
+            siteAttendanceURL = f'https://{domain}/attendance.php'
+            response = DefaultSite.sendRequest(cookies, siteAttendanceURL, method='GET')
+            if response.status_code == 200:
+                LOG_INFO(f"{siteName}：签到成功")
+                return True
+            else:
+                LOG_INFO(f"{siteName} 签到失败")
+                return False
+        except Exception as e:
+            LOG_ERROR(e)
             
     @staticmethod
     def sendRequest(cookies, url, host=None, headers=None, data=None, method='GET'):
@@ -40,7 +42,6 @@ class DefaultSite:
                 response = requests.post(url, headers=headers, cookies=cookies, data=data, timeout=10)
             else:
                 raise ValueError("Unsupported HTTP method provided. Use 'GET' or 'POST'.")
-            
             return response
 
         except Exception as e:
@@ -49,10 +50,14 @@ class DefaultSite:
 
     @staticmethod
     def getSiteName(domain):
-        patterns = config.getSitePatterns()
+        try:    
+            patterns = config.getSitePatterns()
 
-        for pattern, alias in patterns.items():
-            if fnmatch.fnmatch(domain, pattern):
-                return alias
+            for pattern, alias in patterns.items():
+                if fnmatch.fnmatch(domain, pattern):
+                    return alias
 
-        return domain
+            return domain
+        
+        except Exception as e:
+                LOG_ERROR(e)

@@ -42,10 +42,9 @@ class dmhy(Site, domain_suffixes=["u2.dmhy.org"]):
             )
             if response.status_code == 200:
                 LOG_INFO(f"{dmhy.siteName}：签到成功")
-                return {dmhy.siteName:'签到成功'}
+                return True
             else:
                 LOG_INFO(f"{dmhy.siteName} 签到失败")
-                return {dmhy.siteName:'签到失败'}
-
+                return False
         except Exception as e:
             LOG_ERROR(e)
