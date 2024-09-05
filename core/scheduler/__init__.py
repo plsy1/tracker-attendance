@@ -1,6 +1,6 @@
 import schedule, threading, time, random
 from core.config import config
-from core.log import LOG_INFO, LOG_ERROR
+from core.logs import LOG_INFO, LOG_ERROR
 from core.database import Database
 from modules.attendance import Site
 from modules.cookiecloud import Cookies

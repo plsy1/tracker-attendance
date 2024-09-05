@@ -1,6 +1,6 @@
 import yaml
 import os, sys
-from core.log import LOG_ERROR, LOG_INFO
+from core.logs import LOG_ERROR, LOG_INFO
 
 DATABASE_DIR = 'data'
 DATABASE_NAME = "data.db"

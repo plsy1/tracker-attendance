@@ -1,7 +1,7 @@
 import requests  # type: ignore
 from typing import Dict
 from modules.attendance import Site
-from core.log import LOG_ERROR,LOG_INFO
+from core.logs import LOG_ERROR,LOG_INFO
 import re
 
 class totheglory(Site, domain_suffixes=["totheglory.im"]):

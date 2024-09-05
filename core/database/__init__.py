@@ -1,6 +1,6 @@
 import sqlite3
 from contextlib import contextmanager
-from core.log import LOG_INFO, LOG_ERROR
+from core.logs import LOG_INFO, LOG_ERROR
 import os
 from core.config import DATABASE_DIR, DATABASE_NAME
 from typing import Dict, Tuple, Optional

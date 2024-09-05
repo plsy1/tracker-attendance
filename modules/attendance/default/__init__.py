@@ -1,5 +1,5 @@
 from typing import  Dict
-from core.log import LOG_ERROR,LOG_INFO
+from core.logs import LOG_ERROR,LOG_INFO
 from core.config import config
 import requests, fnmatch # type: ignore
 class DefaultSite:

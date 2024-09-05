@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Type, Dict, List
-from core.log import LOG_ERROR
+from core.logs import LOG_ERROR
 import requests # type: ignore
 from modules.attendance.default import DefaultSite
 
