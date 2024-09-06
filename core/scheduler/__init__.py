@@ -68,7 +68,7 @@ class Scheduler:
         schedule.every().day.at(random_time_two).do(Scheduler.perform_attendance)
     
     @staticmethod
-    def uodateCookies():
+    def updateCookies():
         Database.insert_cookies(Cookies.getCookies())
         
     @staticmethod    
@@ -76,15 +76,14 @@ class Scheduler:
         schedule.clear()
         schedule.every().day.at("00:00").do(Scheduler.daily_reset)  
         Scheduler.autoAttendance()
-        schedule.every(60).minutes.do(Scheduler.uodateCookies)
+        schedule.every(60).minutes.do(Scheduler.updateCookies)
 
     @staticmethod
     def Run():
-        schedule.every().day.at("00:00").do(Scheduler.daily_reset)
         LOG_INFO(("程序启动，初始化调度任务......"))
         schedule.every().day.at("00:00").do(Scheduler.daily_reset)
         Scheduler.autoAttendance()
-        schedule.every(60).minutes.do(Scheduler.uodateCookies)
+        schedule.every(60).minutes.do(Scheduler.updateCookies)
         while True:
             schedule.run_pending()
             time.sleep(1)
