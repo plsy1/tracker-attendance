@@ -28,6 +28,5 @@ def init():
     
 if __name__ == "__main__":
     init()
-    Scheduler.perform_attendance()
     while True:
         time.sleep(1)
