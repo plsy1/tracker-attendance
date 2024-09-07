@@ -73,6 +73,7 @@ class Scheduler:
         
     @staticmethod    
     def daily_reset():
+        time.sleep(1) #cpu速度太快了，能不能收一收
         schedule.clear()
         schedule.every().day.at("00:00").do(Scheduler.daily_reset)  
         Scheduler.autoAttendance()
