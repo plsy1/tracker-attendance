@@ -23,8 +23,8 @@ def getSiteName(domain):
 
 class Scheduler:
     @staticmethod
-    def generate_random_time():
-        random_hour = random.randint(0, 20)
+    def generate_random_time(begin: int, end: int):
+        random_hour = random.randint(begin, end)
         random_minute = random.randint(0, 59)
         random_time = f"{str(random_hour).zfill(2)}:{str(random_minute).zfill(2)}"
         return random_time
@@ -58,8 +58,8 @@ class Scheduler:
     @staticmethod
     def autoAttendance():
 
-        random_time_one = Scheduler.generate_random_time()
-        random_time_two = Scheduler.generate_random_time()
+        random_time_one = Scheduler.generate_random_time(9,12)
+        random_time_two = Scheduler.generate_random_time(15,18)
         LOG_INFO(f"每日签到开启，生成随机执行时间：{random_time_one}, {random_time_two}")
         while random_time_two == random_time_one:
             random_time_two = Scheduler.generate_random_time()

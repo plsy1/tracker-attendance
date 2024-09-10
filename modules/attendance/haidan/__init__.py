@@ -5,7 +5,7 @@ from core.logs import LOG_ERROR, LOG_INFO
 import re, random
 
 
-class haidan(Site, domain_suffixes=["www.haidan.video"]):
+class haidan(Site, domain_suffixes=["haidan.video"]):
 
     siteName = "海胆"
     siteAttendanceURL = "https://www.haidan.video/signin.php"
@@ -23,7 +23,7 @@ class haidan(Site, domain_suffixes=["www.haidan.video"]):
                 LOG_INFO(f"{haidan.siteName}：签到成功")
                 return True
             else:
-                LOG_INFO(f"{haidan.siteName} 签到失败")
+                LOG_INFO(f"{haidan.siteName} 签到失败了卧槽")
                 return False
         except Exception as e:
             LOG_ERROR(e)
