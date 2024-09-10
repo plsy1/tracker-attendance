@@ -23,7 +23,7 @@ class haidan(Site, domain_suffixes=["haidan.video"]):
                 LOG_INFO(f"{haidan.siteName}：签到成功")
                 return True
             else:
-                LOG_INFO(f"{haidan.siteName} 签到失败了卧槽")
+                LOG_INFO(f"{haidan.siteName} 签到失败")
                 return False
         except Exception as e:
             LOG_ERROR(e)
