@@ -27,6 +27,7 @@ def init():
     Scheduler.Start()
     
 if __name__ == "__main__":
+    auto_import_subclasses("modules.attendance")
     init()
     while True:
         time.sleep(1)
