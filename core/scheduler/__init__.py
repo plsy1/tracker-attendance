@@ -39,10 +39,9 @@ class Scheduler:
             exclude_suffixes = config.getExcludeSuffixes()
             exclude_keywords = config.getExcludeKeywords()
             for domain, cookies in data.items():
-                if any(domain.endswith(suffix) for suffix in exclude_suffixes):
+                if not any(domain.endswith(suffix) for suffix in exclude_suffixes) and not any(keyword in domain for keyword in exclude_keywords):
                     continue
-                if any(keyword in domain for keyword in exclude_keywords):
-                    LOG_INFO(f"跳过签到：{domain}")
+                if domain.startswith('.'):
                     continue
                 site_class = Site.get_site_class(domain)
                 credentials = {"domain": domain, "cookies": cookies}
