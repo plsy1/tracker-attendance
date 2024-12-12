@@ -23,7 +23,7 @@ def init():
     Database.init()
     Database.insert_cookies(Cookies.getCookies())
     auto_import_subclasses("modules.attendance")
-    Scheduler.perform_attendance()
+    Scheduler.Start()
 
 
 if __name__ == "__main__":
