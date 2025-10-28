@@ -47,4 +47,4 @@ class dmhy(Site, domain_suffixes=["u2.dmhy.org"]):
                 LOG_INFO(f"{dmhy.siteName} 签到失败")
                 return False
         except Exception as e:
-            LOG_ERROR(e)
+            LOG_ERROR("U2签到失败: 今日已经签到过")
