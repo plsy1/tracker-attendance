@@ -1,5 +1,5 @@
 from PyCookieCloud import PyCookieCloud
-from core.logs import LOG_INFO,LOG_ERROR
+from core.logs import LOG_ERROR
 from core.config import config
 from typing import Dict
 

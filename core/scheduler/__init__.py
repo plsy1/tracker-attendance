@@ -7,9 +7,8 @@ from modules.cookiecloud import Cookies
 from modules.telegram import TGBOT
 
 
-
 def getSiteName(domain):
-    try:    
+    try:
         patterns = config.getSitePatterns()
 
         for pattern, alias in patterns.items():
@@ -17,64 +16,64 @@ def getSiteName(domain):
                 return alias
 
         return domain
-    
+
     except Exception as e:
-            LOG_ERROR(e)
+        LOG_ERROR(e)
+
 
 class Scheduler:
     @staticmethod
     def generate_random_time(begin: int, end: int):
-        random_hour = random.randint(begin, end-1)
+        random_hour = random.randint(begin, end - 1)
         random_minute = random.randint(0, 59)
         random_time = f"{str(random_hour).zfill(2)}:{str(random_minute).zfill(2)}"
         return random_time
-    
-
 
     @staticmethod
     def perform_attendance():
-        message = '【站点签到】\n'
+        message = "【PT自动签到】\n"
         try:
             data = Database.fetch_cookies()
-            exclude_suffixes = config.getExcludeSuffixes()
-            exclude_keywords = config.getExcludeKeywords()
+            vaild_tracker_suffixes = config.getValidTrackerSuffixes()
+            vaild_tracker_keywords = config.getValidTrackerKeywords()
             for domain, cookies in data.items():
-                if not any(domain.endswith(suffix) for suffix in exclude_suffixes) and not any(keyword in domain for keyword in exclude_keywords):
+                if not any(
+                    domain.endswith(suffix) for suffix in vaild_tracker_suffixes
+                ) and not any(keyword in domain for keyword in vaild_tracker_keywords):
                     continue
-                if domain.startswith('.'):
+                if domain.startswith("."):
                     continue
                 site_class = Site.get_site_class(domain)
                 credentials = {"domain": domain, "cookies": cookies}
                 siteName = getSiteName(domain)
                 if site_class.sign_in(credentials):
-                    message += (f'{siteName} 签到成功\n')
+                    message += f"{siteName} 签到成功\n"
                 else:
-                    message += (f'{siteName} 签到失败\n')
+                    message += f"{siteName} 签到失败\n"
             TGBOT.Send_Message(message)
         except Exception as e:
             LOG_ERROR(e)
-            
+
     @staticmethod
     def autoAttendance():
 
-        random_time_one = Scheduler.generate_random_time(9,12)
-        random_time_two = Scheduler.generate_random_time(15,18)
-        LOG_INFO(f"每日签到开启，生成随机执行时间：{random_time_one}, {random_time_two}")
-        #while random_time_two == random_time_one:
-            #random_time_two = Scheduler.generate_random_time()
-
+        random_time_one = Scheduler.generate_random_time(9, 12)
+        random_time_two = Scheduler.generate_random_time(15, 18)
+        LOG_INFO(
+            f"每日签到开启，生成随机执行时间：{random_time_one}, {random_time_two}"
+        )
         schedule.every().day.at(random_time_one).do(Scheduler.perform_attendance)
         schedule.every().day.at(random_time_two).do(Scheduler.perform_attendance)
-    
+
     @staticmethod
     def updateCookies():
         Database.insert_cookies(Cookies.getCookies())
-        
-    @staticmethod    
+
+    @staticmethod
     def daily_reset():
-        time.sleep(1) #cpu速度太快了，能不能收一收
+        time.sleep(1)
         schedule.clear()
-        schedule.every().day.at("00:00").do(Scheduler.daily_reset)  
+        schedule.every().day.at("00:00").do(Scheduler.daily_reset)
         Scheduler.autoAttendance()
         schedule.every(60).minutes.do(Scheduler.updateCookies)
 
@@ -87,8 +86,8 @@ class Scheduler:
         while True:
             schedule.run_pending()
             time.sleep(1)
-            
-    @staticmethod        
+
+    @staticmethod
     def Start():
         scheduler_thread = threading.Thread(target=Scheduler.Run, daemon=True)
         scheduler_thread.start()

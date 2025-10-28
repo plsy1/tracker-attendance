@@ -1,9 +1,9 @@
-import yaml
-import os, sys
-from core.logs import LOG_ERROR, LOG_INFO
+import yaml, os
+from core.logs import LOG_ERROR
 
-DATABASE_DIR = 'data'
+DATABASE_DIR = "data"
 DATABASE_NAME = "data.db"
+
 
 class ConfigManager:
     def __init__(self, config_file_path=None):
@@ -14,12 +14,10 @@ class ConfigManager:
         except Exception as e:
             LOG_ERROR(e)
 
-
     def load_config(self, config_file_path):
         with open(config_file_path, "r") as f:
             config = yaml.safe_load(f)
         return config
-
 
     def getCookieCloudConfig(self):
         try:
@@ -27,33 +25,34 @@ class ConfigManager:
             return result
         except Exception as e:
             LOG_ERROR(e)
-            
+
     def getTelegramConfig(self):
         try:
             result = self.config.get("telegram", {})
             return result
         except Exception as e:
             LOG_ERROR(e)
-            
-    def getExcludeSuffixes(self):
+
+    def getValidTrackerSuffixes(self):
         try:
-            result = self.config.get('exclude_suffixes', [])
+            result = self.config.get("valid_tracker_suffixes", [])
             return result
         except Exception as e:
             LOG_ERROR(e)
-            
-    def getExcludeKeywords(self):
+
+    def getValidTrackerKeywords(self):
         try:
-            result = self.config.get('exclude_keywords', [])
+            result = self.config.get("valid_tracker_keywords", [])
             return result
         except Exception as e:
             LOG_ERROR(e)
-            
+
     def getSitePatterns(self):
         try:
-            result = self.config.get('sites', {})
+            result = self.config.get("sites", {})
             return result
         except Exception as e:
             LOG_ERROR(e)
-            
+
+
 config = ConfigManager()
