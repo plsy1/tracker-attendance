@@ -39,7 +39,7 @@ class DefaultSite:
                 LOG_INFO(f"{siteName}：签到成功")
                 return True
             else:
-                LOG_INFO(f"{siteName} 签到失败")
+                LOG_ERROR(f"{siteName} 签到失败")
                 return False
         except Exception as e:
             LOG_ERROR(e)

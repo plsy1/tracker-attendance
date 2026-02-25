@@ -31,26 +31,50 @@ class Scheduler:
 
     @staticmethod
     def perform_attendance():
-        message = "【PT自动签到】\n"
         try:
             data = Database.fetch_cookies()
             vaild_tracker_suffixes = config.getValidTrackerSuffixes()
             vaild_tracker_keywords = config.getValidTrackerKeywords()
+
+            success_list = []
+            fail_list = []
+
             for domain, cookies in data.items():
                 if not any(
                     domain.endswith(suffix) for suffix in vaild_tracker_suffixes
                 ) and not any(keyword in domain for keyword in vaild_tracker_keywords):
                     continue
+
                 if domain.startswith("."):
                     continue
+
                 site_class = Site.get_site_class(domain)
                 credentials = {"domain": domain, "cookies": cookies}
                 siteName = getSiteName(domain)
+
                 if site_class.sign_in(credentials):
-                    message += f"{siteName} 签到成功\n"
+                    success_list.append(siteName)
                 else:
-                    message += f"{siteName} 签到失败\n"
+                    fail_list.append(siteName)
+
+            message = "【PT站自动签到】\n"
+
+            message += f"\n"
+
+            if success_list:
+                message += "签到成功站点：\n"
+                for name in success_list:
+                    message += f"{name}\n"
+
+                message += f"\n"
+
+            if fail_list:
+                message += "签到失败站点：\n"
+                for name in fail_list:
+                    message += f"{name}\n"
+
             TGBOT.Send_Message(message)
+
         except Exception as e:
             LOG_ERROR(e)
 
